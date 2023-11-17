@@ -49,12 +49,16 @@ const Home = () => {
 
   if (!tasks || !user) return <Loading visible />;
 
+  const handleClickPost = () => {
+    console.log('click');
+  };
+
   return (
     <>
       <BasicHeader user={user} />
-      <div className={styles.title} style={{ marginTop: '160px' }}>
-        Welcome to frourio!
-      </div>
+      <button className={styles.title} style={{ marginTop: '160px' }} onClick={handleClickPost}>
+        POST Click
+      </button>
 
       <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTask}>
         <input value={label} type="text" onChange={inputLabel} />
