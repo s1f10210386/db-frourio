@@ -13,6 +13,8 @@ const Home = () => {
   const [user] = useAtom(userAtom);
   const [tasks, setTasks] = useState<TaskModel[]>();
   const [label, setLabel] = useState('');
+  const [content, setContent] = useState('hage');
+
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
   };
@@ -53,10 +55,18 @@ const Home = () => {
     console.log('click');
   };
 
+  const createTesta = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!content) return;
+
+    await apiClient.testa.post({ body: { content } }).catch(returnNull);
+    setContent('');
+  };
+
   return (
     <>
       <BasicHeader user={user} />
-      <button className={styles.title} style={{ marginTop: '160px' }} onClick={handleClickPost}>
+      <button className={styles.title} style={{ marginTop: '160px' }} onClick={createTesta}>
         POST Click
       </button>
 
