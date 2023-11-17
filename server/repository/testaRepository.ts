@@ -11,3 +11,8 @@ export const postTest = async (content: string) => {
   });
   return result;
 };
+
+export const getTest = async () => {
+  const result = await prismaClient.testa.findMany({});
+  return result;
+};

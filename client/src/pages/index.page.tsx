@@ -13,11 +13,15 @@ const Home = () => {
   const [user] = useAtom(userAtom);
   const [tasks, setTasks] = useState<TaskModel[]>();
   const [label, setLabel] = useState('');
-  const [content, setContent] = useState('hage');
+  const [content, setContent] = useState('');
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
   };
+  const inputContent = (e: ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+  };
+
   const fetchTasks = async () => {
     const tasks = await apiClient.tasks.$get().catch(returnNull);
 
@@ -51,8 +55,11 @@ const Home = () => {
 
   if (!tasks || !user) return <Loading visible />;
 
-  const handleClickPost = () => {
-    console.log('click');
+  const fetchTesta = async () => {
+    const testa = await apiClient.testa.$get().catch(returnNull);
+
+    if (testa !== null) setContent(testa[0]?.content || '');
+    console.log('testa', testa);
   };
 
   const createTesta = async (e: FormEvent) => {
@@ -60,7 +67,9 @@ const Home = () => {
     if (!content) return;
 
     await apiClient.testa.post({ body: { content } }).catch(returnNull);
+    console.log('content', content);
     setContent('');
+    await fetchTesta();
   };
 
   return (
@@ -70,11 +79,12 @@ const Home = () => {
         POST Click
       </button>
 
-      <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTask}>
-        <input value={label} type="text" onChange={inputLabel} />
+      <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
+        <input value={content} type="text" onChange={inputContent} />
         <input type="submit" value="ADD" />
       </form>
-      <ul className={styles.tasks}>
+
+      {/* <ul className={styles.tasks}>
         {tasks.map((task) => (
           <li key={task.id}>
             <label>
@@ -89,7 +99,7 @@ const Home = () => {
             />
           </li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 };
