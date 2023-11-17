@@ -16,8 +16,6 @@ model Task {
 }
 
 model Testa {
-  id String @id
+  id Int    @id @default(autoincrement())
   content String
 }
-
- 

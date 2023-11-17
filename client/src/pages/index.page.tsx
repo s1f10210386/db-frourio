@@ -1,4 +1,5 @@
 import type { TaskModel } from 'commonTypesWithClient/models';
+import type { TestaModel } from 'commonTypesWithClient/testamodels';
 import { useAtom } from 'jotai';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,9 @@ const Home = () => {
   const [user] = useAtom(userAtom);
   const [tasks, setTasks] = useState<TaskModel[]>();
   const [label, setLabel] = useState('');
+  const [testa, setTesta] = useState<TestaModel[]>();
   const [content, setContent] = useState('');
+  const [twodigit, setTwodigit] = useState<TestaModel[]>();
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
@@ -55,10 +58,12 @@ const Home = () => {
 
   if (!tasks || !user) return <Loading visible />;
 
+  //TestaModelあるおかげでsetTestaができる。引数もTestaModel[]になるから態々型を定義しなくてもいい
+
   const fetchTesta = async () => {
     const testa = await apiClient.testa.$get().catch(returnNull);
 
-    if (testa !== null) setContent(testa[0]?.content || '');
+    if (testa !== null) setTesta(testa);
     console.log('testa', testa);
   };
 
@@ -70,21 +75,51 @@ const Home = () => {
     console.log('content', content);
     setContent('');
     await fetchTesta();
+    await getwoTesta();
+  };
+
+  //getだけ定義してるgetwo呼出す
+  const getwoTesta = async () => {
+    const twodigit = await apiClient.getwo.$get().catch(returnNull);
+
+    if (twodigit !== null) setTwodigit(twodigit);
+    console.log('twodigit', twodigit);
   };
 
   return (
     <>
       <BasicHeader user={user} />
-      <button className={styles.title} style={{ marginTop: '160px' }} onClick={createTesta}>
-        POST Click
-      </button>
 
       <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
         <input value={content} type="text" onChange={inputContent} />
         <input type="submit" value="ADD" />
       </form>
+      <div className="containers">
+        <div className="container">
+          <div className="form-box">
+            <h2 className="title">自分の送った文章(testa)</h2>
+            {testa?.map((item, index) => (
+              <div key={index} className="list-item">
+                <p>{item.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {/* <ul className={styles.tasks}>
+        <div className="container">
+          <div className="form-box">
+            <h2 className="title">ID2桁の文章(twodigit)</h2>
+            {twodigit?.map((item, index) => (
+              <div key={index} className="list-item">
+                <p>{item.content}</p>
+                <p>{item.id}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <ul className={styles.tasks}>
         {tasks.map((task) => (
           <li key={task.id}>
             <label>
@@ -99,7 +134,7 @@ const Home = () => {
             />
           </li>
         ))}
-      </ul> */}
+      </ul>
     </>
   );
 };

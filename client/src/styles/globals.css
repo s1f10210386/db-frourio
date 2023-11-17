@@ -15,3 +15,30 @@ a {
   padding: 0;
   margin: 0;
 }
+
+.containers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  padding: 16px;
+  width: 50%;
+}
+
+.form-box {
+  margin-bottom: 16px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.list-item {
+  margin-bottom: 8px;
+  padding: 5px;
+}
