@@ -17,8 +17,8 @@ const Home = () => {
   const [testa, setTesta] = useState<TestaModel[]>();
   const [content, setContent] = useState('');
   const [twodigit, setTwodigit] = useState<TestaModel[]>();
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+  const [lati_Str, setLati_Str] = useState('');
+  const [long_Str, setLong_Str] = useState('');
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
@@ -27,10 +27,10 @@ const Home = () => {
     setContent(e.target.value);
   };
   const inputLatitude = (e: ChangeEvent<HTMLInputElement>) => {
-    setLatitude(e.target.value);
+    setLati_Str(e.target.value);
   };
   const inputLongitude = (e: ChangeEvent<HTMLInputElement>) => {
-    setLongitude(e.target.value);
+    setLong_Str(e.target.value);
   };
 
   const fetchTasks = async () => {
@@ -76,33 +76,33 @@ const Home = () => {
   };
 
   //getだけ定義してるgetwo呼出す
-  const getwoTesta = async () => {
-    const twodigit = await apiClient.getwo.$get().catch(returnNull);
+  // const getwoTesta = async () => {
+  //   const twodigit = await apiClient.getwo.$get().catch(returnNull);
 
-    if (twodigit !== null) setTwodigit(twodigit);
-    console.log('twodigit', twodigit);
-  };
+  //   if (twodigit !== null) setTwodigit(twodigit);
+  //   console.log('twodigit', twodigit);
+  // };
 
   const createTesta = async (e: FormEvent) => {
     e.preventDefault();
 
     //inputしたやつは初めstring型だからNum型に自分で治す
-    const lat_Num = parseFloat(latitude);
-    const lon_Num = parseFloat(longitude);
+    const latitude = parseFloat(lati_Str);
+    const longitude = parseFloat(long_Str);
 
-    if (!content || isNaN(lat_Num) || isNaN(lon_Num)) return;
+    if (!content || isNaN(latitude) || isNaN(longitude)) return;
 
-    console.log('content', content, 'Latitude:', lat_Num, 'Longitude:', lon_Num);
+    console.log('content', content, 'Latitude:', latitude, 'Longitude:', longitude);
 
     // content, latitude, longitude を含むオブジェクトをAPIに送信
-    // await apiClient.testa.post({ body: { content, latitude, longitude } }).catch(returnNull);
+    await apiClient.testa.post({ body: { content, latitude, longitude } }).catch(returnNull);
 
     setContent('');
-    setLatitude('');
-    setLongitude('');
+    setLati_Str('');
+    setLong_Str('');
 
     await fetchTesta();
-    await getwoTesta();
+    // await getwoTesta();
   };
 
   return (
@@ -116,8 +116,8 @@ const Home = () => {
 
       <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
         <input value={content} type="text" onChange={inputContent} placeholder="Content" />
-        <input value={latitude} type="text" onChange={inputLatitude} placeholder="Latitude" />
-        <input value={longitude} type="text" onChange={inputLongitude} placeholder="Longitude" />
+        <input value={lati_Str} type="text" onChange={inputLatitude} placeholder="Latitude" />
+        <input value={long_Str} type="text" onChange={inputLongitude} placeholder="Longitude" />
         <input type="submit" value="ADD" />
       </form>
 
@@ -129,10 +129,12 @@ const Home = () => {
       <div className="containers">
         <div className="container">
           <div className="form-box">
-            <h2 className="title">自分の送った文章(testa)</h2>
+            <h2 className="title">送った文章(testa)</h2>
             {testa?.map((item, index) => (
               <div key={index} className="list-item">
                 <p>{item.content}</p>
+                <p>{item.latitude}</p>
+                <p>{item.longitude}</p>
               </div>
             ))}
           </div>
