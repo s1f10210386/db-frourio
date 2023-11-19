@@ -42,14 +42,23 @@ export const getTest = async () => {
 };
 
 //prismaで2桁のidだけを取得する操作をしている(getだから引数いらない)
-export const getTwoDigitId = async () => {
-  const twoDigitTesta = await prismaClient.testa.findMany({
+const currentLatitude = 35.7695488;
+const currentLongitude = 139.722752;
+const latitudeRange = 0.009; // 約1kmの緯度範囲
+const longitudeRange = 0.0118; // 約1kmの経度範囲
+
+export const nearbyRecords = async () => {
+  const records = await prismaClient.testa.findMany({
     where: {
-      id: {
-        gte: 10, // 10以上
-        lte: 99, // 99以下
+      latitude: {
+        gte: currentLatitude - latitudeRange,
+        lte: currentLongitude + latitudeRange,
+      },
+      longitude: {
+        gte: currentLongitude - longitudeRange,
+        lte: currentLongitude + longitudeRange,
       },
     },
   });
-  return twoDigitTesta;
+  return records;
 };

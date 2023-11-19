@@ -19,6 +19,8 @@ const Home = () => {
   const [twodigit, setTwodigit] = useState<TestaModel[]>();
   const [lati_Str, setLati_Str] = useState('');
   const [long_Str, setLong_Str] = useState('');
+  //([])なら初期値配列だからundefinedとならず.mapでzahyou?をつけずに使える
+  const [zahyou, setZahyou] = useState<TestaModel[]>([]);
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
@@ -75,13 +77,13 @@ const Home = () => {
     console.log('testa', testa);
   };
 
-  //getだけ定義してるgetwo呼出す
-  // const getwoTesta = async () => {
-  //   const twodigit = await apiClient.getwo.$get().catch(returnNull);
+  //縛りをつけた座標をget
+  const fetch_nearZahyou = async () => {
+    const zahyou = await apiClient.nearRecord.$get().catch(returnNull);
 
-  //   if (twodigit !== null) setTwodigit(twodigit);
-  //   console.log('twodigit', twodigit);
-  // };
+    if (zahyou !== null) setZahyou(zahyou);
+    console.log('zahyou', zahyou);
+  };
 
   const createTesta = async (e: FormEvent) => {
     e.preventDefault();
@@ -102,7 +104,7 @@ const Home = () => {
     setLong_Str('');
 
     await fetchTesta();
-    // await getwoTesta();
+    await fetch_nearZahyou();
   };
 
   return (
@@ -132,9 +134,8 @@ const Home = () => {
             <h2 className="title">送った文章(testa)</h2>
             {testa?.map((item, index) => (
               <div key={index} className="list-item">
+                <p>{item.id}</p>
                 <p>{item.content}</p>
-                <p>{item.latitude}</p>
-                <p>{item.longitude}</p>
               </div>
             ))}
           </div>
@@ -142,11 +143,12 @@ const Home = () => {
 
         <div className="container">
           <div className="form-box">
-            <h2 className="title">ID2桁の文章(twodigit)</h2>
-            {twodigit?.map((item, index) => (
+            <h2 className="title">半径1km以内の緯度経度</h2>
+            {zahyou?.map((item, index) => (
               <div key={index} className="list-item">
-                <p>{item.content}</p>
                 <p>{item.id}</p>
+                <p>{item.latitude}</p>
+                <p>{item.longitude}</p>
               </div>
             ))}
           </div>
