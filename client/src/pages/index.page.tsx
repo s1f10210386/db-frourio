@@ -3,13 +3,13 @@ import type { TestaModel } from 'commonTypesWithClient/testamodels';
 import { useAtom } from 'jotai';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
+import Geolocation from 'src/components/Geolocation/Geolocation';
 import { Loading } from 'src/components/Loading/Loading';
 import { BasicHeader } from 'src/pages/@components/BasicHeader/BasicHeader';
 import { apiClient } from 'src/utils/apiClient';
 import { returnNull } from 'src/utils/returnNull';
 import { userAtom } from '../atoms/user';
 import styles from './index.module.css';
-
 const Home = () => {
   const [user] = useAtom(userAtom);
   const [tasks, setTasks] = useState<TaskModel[]>();
@@ -111,10 +111,10 @@ const Home = () => {
     <>
       <BasicHeader user={user} />
 
-      <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
-        <input value={content} type="text" onChange={inputContent} />
-        <input type="submit" value="ADD" />
-      </form>
+      <div>
+        <h1>現在地取得</h1>
+        <Geolocation />
+      </div>
 
       <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
         <input value={content} type="text" onChange={inputContent} placeholder="Content" />

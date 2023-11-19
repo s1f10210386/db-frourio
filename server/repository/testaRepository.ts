@@ -1,7 +1,6 @@
 //prismaでDBをどう操作するかを管理する関数(DBをいじくる)
 
 import { prismaClient } from '$/service/prismaClient';
-
 // export const postTest = async (userId: string, content: string) => {
 //   console.log('userid', userId);
 //   console.log('content', content);
