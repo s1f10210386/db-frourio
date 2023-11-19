@@ -8,7 +8,7 @@ export default defineController(() => ({
   }),
   post: async ({ body }) => ({
     status: 201,
-    body: await postTest(body.content),
+    body: await postTest(body.content, body.latitude, body.longitude),
   }),
   // getwo: async () => ({
   //   status: 200,

@@ -1,3 +1,5 @@
+//prismaでDBをどう操作するかを管理する関数(DBをいじくる)
+
 import { prismaClient } from '$/service/prismaClient';
 
 // export const postTest = async (userId: string, content: string) => {
@@ -12,11 +14,13 @@ import { prismaClient } from '$/service/prismaClient';
 //   return result;
 // };
 
-export const postTest = async (content: string) => {
+export const postTest = async (content: string, latitude: number, longitude: number) => {
   console.log(content);
   const result = await prismaClient.testa.create({
     data: {
       content,
+      latitude,
+      longitude,
     },
   });
   return result;
@@ -37,7 +41,7 @@ export const getTest = async () => {
   return result;
 };
 
-//prismaで2桁のidだけを取得する操作をしている
+//prismaで2桁のidだけを取得する操作をしている(getだから引数いらない)
 export const getTwoDigitId = async () => {
   const twoDigitTesta = await prismaClient.testa.findMany({
     where: {

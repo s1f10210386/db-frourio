@@ -18,4 +18,6 @@ model Task {
 model Testa {
   id Int    @id @default(autoincrement())
   content String
+  latitude Float
+  longitude Float
 }

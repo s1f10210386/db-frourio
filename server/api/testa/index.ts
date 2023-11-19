@@ -15,11 +15,13 @@ import type { DefineMethods } from 'aspida';
 
 export type Methods = DefineMethods<{
   get: {
-    resBody: { id: number; content: string }[];
+    resBody: { id: number; content: string; latitude: number; longitude: number }[];
   };
   post: {
     reqBody: {
       content: string;
+      latitude: number;
+      longitude: number;
     };
   };
   // getwo: {

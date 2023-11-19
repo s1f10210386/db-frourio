@@ -17,12 +17,20 @@ const Home = () => {
   const [testa, setTesta] = useState<TestaModel[]>();
   const [content, setContent] = useState('');
   const [twodigit, setTwodigit] = useState<TestaModel[]>();
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
   };
   const inputContent = (e: ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
+  };
+  const inputLatitude = (e: ChangeEvent<HTMLInputElement>) => {
+    setLatitude(e.target.value);
+  };
+  const inputLongitude = (e: ChangeEvent<HTMLInputElement>) => {
+    setLongitude(e.target.value);
   };
 
   const fetchTasks = async () => {
@@ -67,23 +75,34 @@ const Home = () => {
     console.log('testa', testa);
   };
 
-  const createTesta = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!content) return;
-
-    await apiClient.testa.post({ body: { content } }).catch(returnNull);
-    console.log('content', content);
-    setContent('');
-    await fetchTesta();
-    await getwoTesta();
-  };
-
   //getだけ定義してるgetwo呼出す
   const getwoTesta = async () => {
     const twodigit = await apiClient.getwo.$get().catch(returnNull);
 
     if (twodigit !== null) setTwodigit(twodigit);
     console.log('twodigit', twodigit);
+  };
+
+  const createTesta = async (e: FormEvent) => {
+    e.preventDefault();
+
+    //inputしたやつは初めstring型だからNum型に自分で治す
+    const lat_Num = parseFloat(latitude);
+    const lon_Num = parseFloat(longitude);
+
+    if (!content || isNaN(lat_Num) || isNaN(lon_Num)) return;
+
+    console.log('content', content, 'Latitude:', lat_Num, 'Longitude:', lon_Num);
+
+    // content, latitude, longitude を含むオブジェクトをAPIに送信
+    // await apiClient.testa.post({ body: { content, latitude, longitude } }).catch(returnNull);
+
+    setContent('');
+    setLatitude('');
+    setLongitude('');
+
+    await fetchTesta();
+    await getwoTesta();
   };
 
   return (
@@ -94,6 +113,19 @@ const Home = () => {
         <input value={content} type="text" onChange={inputContent} />
         <input type="submit" value="ADD" />
       </form>
+
+      <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
+        <input value={content} type="text" onChange={inputContent} placeholder="Content" />
+        <input value={latitude} type="text" onChange={inputLatitude} placeholder="Latitude" />
+        <input value={longitude} type="text" onChange={inputLongitude} placeholder="Longitude" />
+        <input type="submit" value="ADD" />
+      </form>
+
+      {/* <form style={{ textAlign: 'center', marginTop: '80px' }} onSubmit={createTesta}>
+        <input value={content} type="text" onChange={inputContent} />
+        <input type="submit" value="ADD" />
+      </form> */}
+
       <div className="containers">
         <div className="container">
           <div className="form-box">
