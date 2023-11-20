@@ -49,13 +49,13 @@ const Geolocation = () => {
     // await fetchLocation();
   };
 
-  const [newLocation, setNewLatitude] = useState<number>();
+  const [newLocation, setNewLatitude] = useState<number[]>([]);
 
   const test = async () => {
     console.log('aaa');
     if (location?.latitude === undefined || location.longitude === undefined) return;
     const data = await apiClient.nearRecord.$get({
-      query: { latitude: location?.latitude, longitude: location.longitude },
+      query: { latitude: location.latitude, longitude: location.longitude },
     });
     console.log('data', data);
   };

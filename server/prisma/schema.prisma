@@ -21,3 +21,4 @@ model Testa {
   latitude Float
   longitude Float
 }
+

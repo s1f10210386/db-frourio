@@ -43,9 +43,8 @@ export const getTest = async () => {
 //prismaで2桁のidだけを取得する操作をしている(getだから引数いらない)
 // const currentLatitude = 35.7695488;
 // const currentLongitude = 139.722752;
-const latitudeRange = 0.009; // 約1kmの緯度範囲
-const longitudeRange = 0.0118; // 約1kmの経度範囲
 
+//
 export const nearbyRecords = async (currentLatitude: number, currentLongitude: number) => {
   const latitudeRange = 0.009; // 約1kmの緯度範囲
   const longitudeRange = 0.0118; // 約1kmの経度範囲
@@ -63,21 +62,5 @@ export const nearbyRecords = async (currentLatitude: number, currentLongitude: n
     },
   });
   console.log('records', records);
-  return records;
-};
-
-export const getFilterRecords = async (latitude: number, longitude: number) => {
-  const records = await prismaClient.testa.findMany({
-    where: {
-      latitude: {
-        gte: latitude - latitudeRange,
-        lte: latitude + latitudeRange,
-      },
-      longitude: {
-        gte: longitude - longitudeRange,
-        lte: longitude + longitudeRange,
-      },
-    },
-  });
   return records;
 };

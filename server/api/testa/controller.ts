@@ -10,10 +10,6 @@ export default defineController(() => ({
     status: 201,
     body: await nearbyRecords(body.latitude, body.longitude),
   }),
-  // getwo: async () => ({
-  //   status: 200,
-  //   body: await getTwoDigitId(),
-  // }),
 }));
 
 // export default defineController(() => ({
