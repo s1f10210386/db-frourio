@@ -85,6 +85,12 @@ const Home = () => {
     console.log('zahyou', zahyou);
   };
 
+  const createPostPost = async () => {
+    const post = await apiClient.posts.$post({ body: { userID: 1 } }).catch(returnNull);
+    console.log('post', post);
+  };
+
+  //入力してボタンおすとPOSTされる
   const createTesta = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -181,6 +187,7 @@ const Home = () => {
           </li>
         ))}
       </ul>
+      <button onClick={createPostPost}>aaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
     </>
   );
 };

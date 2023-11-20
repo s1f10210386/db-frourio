@@ -1,6 +1,8 @@
 //prismaでDBをどう操作するかを管理する関数(DBをいじくる)
 
 import { prismaClient } from '$/service/prismaClient';
+import { randomUUID } from 'crypto';
+
 // export const postTest = async (userId: string, content: string) => {
 //   console.log('userid', userId);
 //   console.log('content', content);
@@ -14,7 +16,6 @@ import { prismaClient } from '$/service/prismaClient';
 // };
 
 export const postTest = async (content: string, latitude: number, longitude: number) => {
-  console.log(content);
   const result = await prismaClient.testa.create({
     data: {
       content,
@@ -63,4 +64,17 @@ export const nearbyRecords = async (currentLatitude: number, currentLongitude: n
   });
   console.log('records', records);
   return records;
+};
+
+export const postPost = async (userid: number) => {
+  console.log('back届いた');
+  const post = prismaClient.post.create({
+    data: {
+      id: randomUUID(),
+      likes: 2,
+      userID: userid,
+    },
+  });
+  console.log('post', post);
+  return post;
 };
