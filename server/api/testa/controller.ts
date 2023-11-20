@@ -1,4 +1,4 @@
-import { getTest, postTest } from '$/repository/testaRepository';
+import { getTest, nearbyRecords } from '$/repository/testaRepository';
 import { defineController } from './$relay';
 
 export default defineController(() => ({
@@ -8,7 +8,7 @@ export default defineController(() => ({
   }),
   post: async ({ body }) => ({
     status: 201,
-    body: await postTest(body.content, body.latitude, body.longitude),
+    body: await nearbyRecords(body.latitude, body.longitude),
   }),
   // getwo: async () => ({
   //   status: 200,

@@ -79,7 +79,7 @@ const Home = () => {
 
   //縛りをつけた座標をget
   const fetch_nearZahyou = async () => {
-    const zahyou = await apiClient.nearRecord.$get().catch(returnNull);
+    const zahyou = await apiClient.testa.$get().catch(returnNull);
 
     if (zahyou !== null) setZahyou(zahyou);
     console.log('zahyou', zahyou);
@@ -98,6 +98,16 @@ const Home = () => {
 
     // content, latitude, longitude を含むオブジェクトをAPIに送信
     await apiClient.testa.post({ body: { content, latitude, longitude } }).catch(returnNull);
+
+    //   try {
+    //     const response = await apiClient.testa.post({ body: {content,latitude,longitude} });
+    //     return response.zahyou;
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //     return null;
+    //   }
+    // }
+    // await apiClient.geolocation.post({ body: { latitude, longitude } }).catch(returnNull);
 
     setContent('');
     setLati_Str('');
