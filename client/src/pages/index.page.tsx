@@ -1,4 +1,5 @@
 import type { TaskModel } from 'commonTypesWithClient/models';
+import type { PostsModel } from 'commonTypesWithClient/postmodel';
 import type { TestaModel } from 'commonTypesWithClient/testamodels';
 import { useAtom } from 'jotai';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -9,7 +10,7 @@ import { BasicHeader } from 'src/pages/@components/BasicHeader/BasicHeader';
 import { apiClient } from 'src/utils/apiClient';
 import { returnNull } from 'src/utils/returnNull';
 import { userAtom } from '../atoms/user';
-import styles from './index.module.css';
+
 const Home = () => {
   const [user] = useAtom(userAtom);
   const [tasks, setTasks] = useState<TaskModel[]>();
@@ -21,6 +22,10 @@ const Home = () => {
   const [long_Str, setLong_Str] = useState('');
   //([])なら初期値配列だからundefinedとならず.mapでzahyou?をつけずに使える
   const [zahyou, setZahyou] = useState<TestaModel[]>([]);
+
+  //今回まだ1個しか返さないから<PostsModel[]>([])とする必要はない
+  //配列として扱いたかったら、getの型定義も変える
+  const [post, setPost] = useState<PostsModel>();
 
   const inputLabel = (e: ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
@@ -85,11 +90,6 @@ const Home = () => {
     console.log('zahyou', zahyou);
   };
 
-  const createPostPost = async () => {
-    const post = await apiClient.posts.$post({ body: { userID: 1 } }).catch(returnNull);
-    console.log('post', post);
-  };
-
   //入力してボタンおすとPOSTされる
   const createTesta = async (e: FormEvent) => {
     e.preventDefault();
@@ -121,6 +121,16 @@ const Home = () => {
 
     await fetchTesta();
     await fetch_nearZahyou();
+  };
+
+  //userIDをもとにpost
+  const createPostPost = async () => {
+    const post = await apiClient.posts.$post({ body: { userID: 1 } }).catch(returnNull);
+    console.log('post', post);
+
+    if (post !== null) {
+      setPost(post);
+    }
   };
 
   return (
@@ -171,23 +181,14 @@ const Home = () => {
         </div>
       </div>
 
-      <ul className={styles.tasks}>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <label>
-              <input type="checkbox" checked={task.done} onChange={() => toggleDone(task)} />
-              <span>{task.label}</span>
-            </label>
-            <input
-              type="button"
-              value="DELETE"
-              className={styles.deleteBtn}
-              onClick={() => deleteTask(task)}
-            />
-          </li>
-        ))}
-      </ul>
-      <button onClick={createPostPost}>aaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
+      <div className="container">
+        <button onClick={createPostPost}>userIDもとにしたPOST送信</button>
+        {post && (
+          <p>
+            id:{post.id},likes:{post.likes}, userID:{post.userID}
+          </p>
+        )}
+      </div>
     </>
   );
 };

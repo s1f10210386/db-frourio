@@ -52,7 +52,6 @@ const Geolocation = () => {
   const [newLocation, setNewLatitude] = useState<number[]>([]);
 
   const test = async () => {
-    console.log('aaa');
     if (location?.latitude === undefined || location.longitude === undefined) return;
     const data = await apiClient.nearRecord.$get({
       query: { latitude: location.latitude, longitude: location.longitude },
@@ -79,6 +78,3 @@ const Geolocation = () => {
 };
 
 export default Geolocation;
-function returnNUll(reason: any): PromiseLike<never> {
-  throw new Error('Function not implemented.');
-}
